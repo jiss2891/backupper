@@ -4,16 +4,19 @@ from datetime import datetime as dt
 from tiger import tiger
 
 from django.dispatch import receiver
+from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_save
 
 from dbb.apps.databases.models import Database
 
 
 def calculate_path(instance, filename):
-    hex_code = tiger(instance.backup_file.open().read()).hexdigest()
-    return 'backups_storage/{}/{}/{}.sql'.format(instance.db.name,
-            dt.strftime(dt.now(), "%d_%b_%Y"), hex_code)
+    """
+        Calculates a name for the backup.
+    """
+    return 'backups_storage/{}/{}/{}.sql'.format(instance.user.username, instance.db.name,
+            dt.strftime(dt.now(), "%s"))
 
 
 # Create your models here.
@@ -23,4 +26,4 @@ class Backup(models.Model):
     date = models.DateTimeField(auto_now_add=True, verbose_name="Date")
     backup_file = models.FileField(upload_to=calculate_path, null=True,
             blank=True)
-    #1user ??
+    user = models.ForeignKey(User, verbose_name="Creator")
