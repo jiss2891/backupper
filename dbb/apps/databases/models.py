@@ -12,14 +12,20 @@ class RemoteDatabase(Database):
     password = models.CharField(max_length=100)
     port = models.IntegerField()
 
+    def get_dump(self):
+        pass
 
 class SqliteBackend(Database):
     path = models.CharField(max_length=100)
 
 
 class MysqlBackend(RemoteDatabase):
-    pass
+
+    def get_dump(self):
+        return None
 
 
 class PsqlBackend(RemoteDatabase):
-    pass
+
+    def get_dump(self):
+        os.system("pgdump -d {} -u {} ")

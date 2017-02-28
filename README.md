@@ -13,3 +13,21 @@ Dependiendo del motor de base de datos utilizado, el sistema ofrece opciones pro
 Para poder administrar grandes cantidades de bases de datos, se podran crear grupos de usuarios encargados de las mismas, delegando a estos el trabajo.
 
 Para mantener un control sobre el espacio de almacenamiento, se pueden eliminar backups que se consideren obsoletos, estableciendo una fecha límite para estos, manteniendo siempre al menos un backup.
+
+TODO:
+=====
+
+1) Implementar el dump en cada backend
+
+
+Notas:
+------
+Usar un archivo ~/.pgpass para conexiones automáticas con psql.
+
+cada linea del archivo tendrá:
+
+server:port:database:username:password
+
+con los siguientes permisos:
+
+0600
