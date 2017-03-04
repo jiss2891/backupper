@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'dbb.apps.databases',
     'dbb.apps.backups',
+    'dbb.apps.home',
 
 ]
 
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'dbb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'dbb', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
