@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.views.generic import TemplateView
+from apps.home.views import users_list, index
 from django.contrib import admin
 
+# el $ le dice a la expresion que termina ahi.
 urlpatterns = [
-    url(r'^', TemplateView.as_view(template_name="index.html"), name='index'),
+    url(r'^$', index, name='index'),
+    url(r'^users/$', users_list, name='users-list'),
     url(r'^admin/', admin.site.urls),
 ]

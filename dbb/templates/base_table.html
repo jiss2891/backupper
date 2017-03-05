@@ -1,0 +1,21 @@
+{# tabla básica #}
+<table class="table table-striped">
+  <thead>
+    {% for t in titles %}
+    <th>
+      {{ t }}
+    </th>
+    {% endfor %}
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      {% for cell in row %}
+      <td>
+        {{ cell }}
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
