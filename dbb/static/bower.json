@@ -1,0 +1,25 @@
+{
+  "name": "static",
+  "authors": [
+    "Juan Ignacio Sánchez <jiss2891@gmail.com>"
+  ],
+  "description": "librerías para frontend",
+  "main": "prueba",
+  "keywords": [
+    "fronted",
+    "bower"
+  ],
+  "license": "MIT",
+  "homepage": "?",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
