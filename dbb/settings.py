@@ -122,6 +122,7 @@ STATICFILES_DIRS = [
 STATIC_URL = "/static/"
 
 LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 try:
     from local_settings import *

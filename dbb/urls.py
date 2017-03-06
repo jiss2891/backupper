@@ -21,8 +21,12 @@ from django.contrib.auth import views as auth_views
 
 # el $ le dice a la expresion que termina ahi.
 urlpatterns = [
-    url(r'^login/$', auth_views.login, {'template_name': 'login.html'},
+    url(r'^accounts/login/$', auth_views.login, {'template_name':
+        'login.html'},
         name='login'),
+    url(r'^accounts/logout/$', auth_views.logout, {'template_name':
+        'login.html'},
+        name='logout'),
     url('^', include('django.contrib.auth.urls')),
     url(r'^$', index, name='index'),
     url(r'^users/$', users_list, name='users-list'),
