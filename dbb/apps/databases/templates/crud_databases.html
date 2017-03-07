@@ -1,0 +1,30 @@
+{% extends 'admin.html' %}
+
+{% block content %}
+<form>
+  <div class="form-group">
+    <label for="db_name">Nombre</label>
+    <input type="text" class="form-control" id="db_name" placeholder="Nombre de la base de datos">
+  </div>
+  <label>Eliga un motor de base de datos</label>
+  <div class="list-group">
+    <a href="#" class="list-group-item">SQLite</a>
+    <a href="#" class="list-group-item">MySQL / MaríaDB</a>
+    <a href="#" class="list-group-item">PostgreSQL</a>
+    <a href="#" class="list-group-item">MongoDB</a>
+  </div>
+  <div class="form-group">
+    <label for="db_host">Host</label>
+    <input type="text" class="form-control" id="db_host" placeholder="Dirección IP del servidor de la base de datos.">
+  </div>
+  <div class="form-group">
+    <label for="db_port">Puerto</label>
+    <input type="text" class="form-control" id="db_port" placeholder="Puerto del servidor de la base de datos.">
+  </div>
+  <div class="form-group">
+    <label for="db_pass">Contraseña</label>
+    <input type="password" class="form-control" id="db_pass" placeholder="Password">
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+{% endblock %}
