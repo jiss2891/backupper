@@ -3,6 +3,6 @@ from .views import databases
 
 
 urlpatterns = [
-    url(r'^databases/$', databases, name="crud-database")
+    url(r'^databases/$', databases, name="crud-databases")
 ]
 
