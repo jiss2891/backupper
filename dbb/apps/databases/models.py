@@ -35,14 +35,19 @@ class PsqlBackend(RemoteDatabase):
     def save(self, *args, **kwargs):
         # añado al archivo ~/.pgpass la contraseña nueva.
         usuario = getpass.getuser()
-        print usuario
+        # genero el archivo, si no existe
+        os.system("touch ~/.pgpass")
+        # corrijo los permisos
+        os.system("chmod 600 ~/.pgpass")
+        # abro archivo con permisos de append
         pgpass = open(os.path.join('/home', usuario, '.pgpass'), 'a+')
-        pgpass.write(
-            ':'.join([self.host, str(self.port), self.name, self.username, self.password])[:-1] + "\n"
-        )
+        pgpass.write(u"{}:{}:{}:{}:{}\n".format(self.host, self.port, self.name, self.username, self.password))
         pgpass.close()
         super(PsqlBackend, self).save(args, kwargs)
 
 
     def get_dump(self):
-        os.system("pgdump -U {} -d {} -h {} -p {}".format(self.username, self.name, self.host, self.port))
+        """
+        retorna un popen sin leer
+        """
+        return os.popen("pg_dump -U {} -d {} -h {} -p {}".format(self.username, self.name, self.host, self.port))
