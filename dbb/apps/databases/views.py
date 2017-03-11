@@ -6,6 +6,19 @@ from django.contrib.auth.decorators import login_required
 from dbb.apps.databases.models import Database, PsqlBackend
 
 
+def empty_validator(data, fields):
+    for field in fields:
+        if not data.get(field, None):
+            return False
+    return True
+
+def number_validator(data, fields):
+    for field in fields:
+        if not (type(data.get(field, None)) == type(0)):
+            return False
+    return True
+
+
 @login_required
 def databases(request, *args, **kwargs):
     databases = []
@@ -18,15 +31,23 @@ def databases(request, *args, **kwargs):
         # recibo la data de las base de datos nueva
         data = request.POST
         if data.get('db_backend') == 'psql':
-            psqlB = PsqlBackend(
-                name=data.get('db_name', None),
-                host=data.get('db_host', None),
-                username=data.get('db_user', None),
-                password=data.get('db_pass', None),
-                port=data.get('db_port', None)
-            )
-            psqlB.save()
-            context['result'] = '¡Base registrada correctamente!'
+            if empty_validator(data, ['db_name', 'db_host', 'db_user', 'db_pass', 'db_port']):
+                if number_validator(data,['db_port']):
+                    psqlB = PsqlBackend(
+                        name=data.get('db_name', None),
+                        host=data.get('db_host', None),
+                        username=data.get('db_user', None),
+                        password=data.get('db_pass', None),
+                        port=data.get('db_port', None)
+                    )
+                    psqlB.save()
+                    context['result'] = '¡Base registrada correctamente!'
+                else:
+                    context['result'] = 'El puerto debe ser un valor entero'
+                    context['status'] = 'danger'
+            else:
+                context['result'] = 'Ningún campo debe estar vacío'
+                context['status'] = 'danger'
         else:
             context['result'] = 'Backend no soportado'
             context['status'] = 'warning'
