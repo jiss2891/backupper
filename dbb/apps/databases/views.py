@@ -9,12 +9,9 @@ from dbb.apps.databases.models import Database, PsqlBackend
 @login_required
 def databases(request, *args, **kwargs):
     databases = []
-    for db in PsqlBackend.objects.all().order_by('-pk')[:5]:
-        databases.append(u"{} ({})".format(db.name, db.host))
 
     context = {
         'status': 'success',
-        'db_list': databases
     }
 
     if request.method == 'POST':
@@ -35,6 +32,11 @@ def databases(request, *args, **kwargs):
             context['status'] = 'warning'
     elif request.method == 'GET':
         pass
+
+    for db in PsqlBackend.objects.all().order_by('-pk')[:5]:
+        databases.append(u"{} ({})".format(db.name, db.host))
+
+    context['db_list'] = databases
 
     return render(request, 'crud_databases.html', context)
 
