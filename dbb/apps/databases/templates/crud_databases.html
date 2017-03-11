@@ -9,12 +9,12 @@
 </div>
 {% endif %}
 <div class="row">
-  <div class="col-md-7">
+        <h1>Registro de Base de datos</h1>
+        <hr>
+  <div class="col-md-4">
     <form id="dbCreation" class="common-form" action="{% url 'databases_new' %}" method="post" accept-charset="UTF-8">
       {% csrf_token %}
       <div class="form-group">
-        <h2>Registro de Base de datos</h2>
-        <hr>
         <label for="db_name">Nombre</label>
         <input type="text" class="form-control" id="db_name" name="db_name" placeholder="Nombre de la base de datos">
       </div>
@@ -31,6 +31,8 @@
         <label for="db_host">Host</label>
         <input type="text" class="form-control" id="db_host" name="db_host" placeholder="Dirección IP del servidor de la base de datos.">
       </div>
+  </div>
+  <div class="col-md-4">
       <div class="form-group">
         <label for="db_port">Puerto</label>
         <input type="text" class="form-control" id="db_port" name="db_port" placeholder="Puerto del servidor de la base de datos.">
@@ -46,7 +48,7 @@
       <input type="submit" class="btn btn-default btn-info" value="Registrar">
     </form>
   </div>
-  <div class="col-md-5">
+  <div class="col-md-4">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">Últimas creaciones</h3>
