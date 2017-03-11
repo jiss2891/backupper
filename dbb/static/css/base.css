@@ -1,5 +1,15 @@
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
 body {
-  padding-top: 70px;
+  position: relative;
+  margin: 0;
+  min-height: 100%;
+}
+
+.adjust {
+  height: 70px;
 }
 
 .login-block {
@@ -31,4 +41,19 @@ img {
   height: auto;
   margin-left: auto;
   margin-right: auto;
+}
+
+.common-form {
+  padding: 10px;
+  margin: 10px;
+}
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: -70px;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
 }

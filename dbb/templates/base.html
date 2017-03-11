@@ -1,6 +1,7 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="es">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,15 +16,22 @@
 
   </head>
   <body>
+    <div class="adjust"></div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'bower_components/jquery/dist/jquery.min.js'%}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js'%}"></script>
     {% block nav %}
     {% endblock %}
     <div class="container">
     {% block content %}
     {% endblock %}
     </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="{% static 'bower_components/jquery/dist/jquery.min.js'%}"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js'%}"></script>
+    <footer class="footer">
+      <div class="container">
+        <p>Texto de Prueba</p>
+      </div>
+    </footer>
   </body>
 </html>
