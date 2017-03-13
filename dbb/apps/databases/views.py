@@ -13,10 +13,13 @@ def empty_validator(data, fields):
     return True
 
 def number_validator(data, fields):
-    for field in fields:
-        if not (type(data.get(field, None)) == type(0)):
-            return False
-    return True
+    i = 0
+    isNum = True
+    while (i < len(fields) and isNum):
+        isNum = data.get(fields[i]).isdigit()
+        i += 1
+
+    return (isNum)
 
 
 @login_required
