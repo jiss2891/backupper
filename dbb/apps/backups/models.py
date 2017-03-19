@@ -19,7 +19,6 @@ def calculate_path(instance, filename):
             dt.strftime(dt.now(), "%s"))
 
 
-# Create your models here.
 class Backup(models.Model):
     db = models.ForeignKey(Database, verbose_name="Database",
             related_name='backups')

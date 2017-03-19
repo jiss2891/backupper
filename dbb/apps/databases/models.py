@@ -10,6 +10,9 @@ from django.conf import settings
 class Database(models.Model):
     name = models.CharField(max_length=100)
 
+    def get_dump(self):
+        pass
+
 
 class RemoteDatabase(Database):
     host = models.CharField(max_length=100)
@@ -23,11 +26,14 @@ class RemoteDatabase(Database):
 class SqliteBackend(Database):
     path = models.CharField(max_length=100)
 
+    def get_dump(self):
+        return "No implementado"
+
 
 class MysqlBackend(RemoteDatabase):
 
     def get_dump(self):
-        return None
+        return "No implementado"
 
 
 class PsqlBackend(RemoteDatabase):
@@ -41,7 +47,9 @@ class PsqlBackend(RemoteDatabase):
         os.system("chmod 600 ~/.pgpass")
         # abro archivo con permisos de append
         pgpass = open(os.path.join('/home', usuario, '.pgpass'), 'a+')
-        pgpass.write(u"{}:{}:{}:{}:{}\n".format(self.host, self.port, self.name, self.username, self.password))
+
+        pg_line = u"%s:%s:%s:%s:%s\n" % (self.host, self.port, self.name, self.username, self.password)
+        pgpass.write(pg_line)
         pgpass.close()
         super(PsqlBackend, self).save(args, kwargs)
 
@@ -50,4 +58,5 @@ class PsqlBackend(RemoteDatabase):
         """
         retorna un popen sin leer
         """
-        return os.popen("pg_dump -U {} -d {} -h {} -p {}".format(self.username, self.name, self.host, self.port))
+        print "pg_dump -h {} -p {} -U {} -d {} ".format(self.host, self.port, self.username, self.name)
+        return os.popen("pg_dump -h {} -p {} -U {} -d {} ".format(self.host, self.port, self.username, self.name))

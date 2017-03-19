@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
+import os
+from datetime import datetime as dt
+
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required
 
 from dbb.apps.databases.models import Database, PsqlBackend
+from dbb.apps.backups.models import Backup
+from dbb.utils.content_type import get_backend_type as bknd
 
 
 def empty_validator(data, fields):
@@ -67,25 +73,45 @@ def databases(request, *args, **kwargs):
 @login_required
 def make_backup(request):
     # obtengo el id de la base de datos
-    db_id = request.POST.get("db_id", None)
+    db_id = request.GET.get("db_id", None)
 
     if (db_id):
-       db = Database.objects.get(pk=db_id)
-       return HttpResponse(db.name + u"-->" + unicode(isinstance(db, PsqlBackend)))
+        real_backend = bknd(db_id)
+        dump = real_backend.get_dump()
+
+        path = settings.MEDIA_ROOT + '/backups_storage/{}/{}'.format(
+            request.user.username,
+            real_backend.name,
+        )
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+        dump_file = open(path + dt.strftime(dt.now(), "%s"), 'w+')
+        dump_file.writelines(dump.readlines())
+
+        bkp = Backup(
+            db=real_backend,
+            backup_file=dump_file.name,
+            user=request.user
+        )
+
+        bkp.save()
+        dump_file.close()
+
+        return HttpResponse("Backup creado correctamente en {}".format(dump_file.name))
     else:
-        raise Exception("Todo mal vieja")
+        raise Exception("Backend no soportado aún.")
 
 
 @login_required
 def databases_list(request):
-    titles = ["Nombre", "Host", "Puerto", "Usuario", "Password", "Backend"]
+    titles = ["ID", "Nombre", "Host", "Puerto", "Usuario", "Password", "Backend"]
     rows = []
 
     databases = PsqlBackend.objects.all()
     for db in databases:
-        data_row = [db.name,db.host, db.port, db.username, '***', 'PostgreSQL']
+        data_row = [db.pk, db.name,db.host, db.port, db.username, '***', 'PostgreSQL']
         rows.append(data_row)
 
     return render(request, 'index.html', context={'rows': rows, 'titles':
         titles})
-
