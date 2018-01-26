@@ -33,7 +33,7 @@ def databases(request, *args, **kwargs):
     databases = []
 
     context = {
-        'status': 'success',
+        'status': 'danger', # caso más común
     }
 
     if request.method == 'POST':
@@ -49,19 +49,19 @@ def databases(request, *args, **kwargs):
                         password=data.get('db_pass', None),
                         port=data.get('db_port', None)
                     )
-                    psqlB.save()
-                    context['result'] = '¡Base registrada correctamente!'
+                    try:
+                        psqlB.save()
+                        context['result'] = '¡Base registrada correctamente!'
+                        context['status'] = 'success'
+                    except ValueError as e:
+                        context['result'] = unicode(e)
                 else:
                     context['result'] = 'El puerto debe ser un valor entero'
-                    context['status'] = 'danger'
             else:
                 context['result'] = 'Ningún campo debe estar vacío'
-                context['status'] = 'danger'
         else:
             context['result'] = 'Backend no soportado'
             context['status'] = 'warning'
-    elif request.method == 'GET':
-        pass
 
     for db in PsqlBackend.objects.all().order_by('-pk')[:5]:
         databases.append(u"{} ({})".format(db.name, db.host))
@@ -105,13 +105,13 @@ def make_backup(request):
 
 @login_required
 def databases_list(request):
-    titles = ["ID", "Nombre", "Host", "Puerto", "Usuario", "Password", "Backend"]
-    rows = []
+    titles = ["Nombre", "Host", "Puerto", "Usuario", "Password", "Backend", "Opciones"]
+    rows = {}
 
     databases = PsqlBackend.objects.all()
     for db in databases:
-        data_row = [db.pk, db.name,db.host, db.port, db.username, '***', 'PostgreSQL']
-        rows.append(data_row)
+        data_row = [db.name, db.host, db.port, db.username, '***', 'PostgreSQL']
+        rows[db.pk] = data_row
 
     return render(request, 'index.html', context={'rows': rows, 'titles':
         titles})
