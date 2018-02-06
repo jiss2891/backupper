@@ -128,7 +128,8 @@ def databases_list(request):
 
     databases = RemoteDatabase.objects.all()
     for db in databases:
-        data_row = [db.name, db.host, db.port, db.username, '***', 'PostgreSQL']
+        db = bknd(db)
+        data_row = [db.name, db.host, db.port, db.username, '***', db.get_backend_label()]
         rows[db.pk] = data_row
 
     return render(request, 'index.html', context={'rows': rows, 'titles':

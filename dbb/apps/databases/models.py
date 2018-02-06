@@ -10,13 +10,18 @@ from dbb.utils import sanitize
 
 
 class Database(models.Model):
+    '''Manage minimal database config'''
     name = models.CharField(max_length=100)
 
     def get_dump(self):
         pass
 
+    def get_backend_label(self):
+        return "Not specified"
+
 
 class RemoteDatabase(Database):
+    ''' Manage databases on remote hosts'''
     host = models.CharField(max_length=100)
     username = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
@@ -25,16 +30,24 @@ class RemoteDatabase(Database):
     def get_dump(self):
         pass
 
+    def get_label(self):
+        return "RemoteDatabase {} on {}".format(self.name, self.host)
+
 class SqliteBackend(Database):
     path = models.CharField(max_length=100)
 
     def get_dump(self):
         return "No implementado"
 
+    def get_backend_label(self):
+        return "SQlite"
 
 class MysqlBackend(RemoteDatabase):
 
     login_path = models.CharField(max_length=100, default="__badfood__")
+
+    def get_backend_label(self):
+        return "MySQL"
 
     def save(self, *args, **kwargs):
         # añado al archivo ~/.pgpass la contraseña nueva.
@@ -75,6 +88,9 @@ class MysqlBackend(RemoteDatabase):
 
 
 class PsqlBackend(RemoteDatabase):
+
+    def get_backend_label(self):
+        return "PostgreSQL"
 
     def save(self, *args, **kwargs):
         # añado al archivo ~/.pgpass la contraseña nueva.
