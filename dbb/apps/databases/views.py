@@ -125,12 +125,14 @@ def make_backup(request):
 def databases_list(request):
     titles = ["Nombre", "Host", "Puerto", "Usuario", "Password", "Backend", "Opciones"]
     rows = {}
+    options = {}
 
     databases = RemoteDatabase.objects.all()
     for db in databases:
         db = bknd(db)
-        data_row = [db.name, db.host, db.port, db.username, '***', db.get_backend_label()]
+        data_row = [[db.name, db.host, db.port, db.username, '***', db.get_backend_label()],
+                {"/databases/backup?db_id={}".format(db.pk): 'glyphicon glyphicon-hdd'}]
         rows[db.pk] = data_row
 
-    return render(request, 'index.html', context={'rows': rows, 'titles':
+    return render(request, 'index.html', context={'options': options, 'rows': rows, 'titles':
         titles})

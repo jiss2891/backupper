@@ -12,13 +12,15 @@
     {% for key, data in rows.items %}
     <tr>
       <td><input type="checkbox"></td>
-      {% for cell in data %}
+      {% for cell in data.0 %}
       <td>
         {{ cell }}
       </td>
       {% endfor %}
       <td id="context_options">
-        <a href="/databases/backup?db_id={{key}}"><span class="glyphicon glyphicon-hdd"></span></a>
+        {% for opt, icon in data.1.items %}
+        <a href="{{ opt }}"><span class="{{ icon }}"></span></a>
+        {% endfor %}
       </td>
     </tr>
     {% endfor %}

@@ -12,7 +12,7 @@ def backups(request):
 
     backups_qs = Backup.objects.all()
     for bkp in backups_qs:
-        data_row = [bkp.db.name, bkp.date, bkp.backup_file.name]
+        data_row = [[bkp.db.name, bkp.date, bkp.backup_file.name], {}]
         rows[bkp.pk] = data_row
 
     return render(request, 'index.html', context={'rows': rows, 'titles':
