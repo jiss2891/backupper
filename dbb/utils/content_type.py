@@ -7,6 +7,7 @@ def get_backend_type(pk):
     PsqlBackend, MysqlBackend o SqliteBackend
 
     """
+    # TODO: cambiar esto por algo decente.
 
     if PsqlBackend.objects.filter(pk=pk).count() > 0:
         # es un psqlbackend

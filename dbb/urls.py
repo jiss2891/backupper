@@ -29,6 +29,7 @@ urlpatterns = [
         name='logout'),
     url('^', include('django.contrib.auth.urls')),
     url('^', include('dbb.apps.databases.urls')),
+    url('^', include('dbb.apps.backups.urls')),
     url(r'^$', index, name='index'),
     url(r'^users/$', users_list, name='users-list'),
     url(r'^admin/', admin.site.urls),
