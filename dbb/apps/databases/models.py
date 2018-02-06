@@ -66,7 +66,7 @@ class MysqlBackend(RemoteDatabase):
             # corrijo los permisos
             os.system("chmod 600 ~/.my.cnf")
             # abro archivo con permisos de append
-            mylogin = open(os.path.join('/home', usuario, '.mylogin.cnf'), 'a+')
+            mylogin = open(os.path.join('/home', usuario, '.my.cnf'), 'a+')
             #pg_line = unicode(self.host) + ":" + self.port + ":" + unicode(self.name) + ":" + self.username + ":" + self.password
             # genero el nombre de la instancia
             self.login_path = "{}".format(self.name)
