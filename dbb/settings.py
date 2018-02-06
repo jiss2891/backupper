@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'dbb.apps.databases',
     'dbb.apps.backups',
     'dbb.apps.home',
-
 ]
 
 MIDDLEWARE = [

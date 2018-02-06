@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required
 
-from dbb.apps.databases.models import Database, PsqlBackend
+from dbb.apps.databases.models import MysqlBackend, Database, RemoteDatabase, PsqlBackend
 from dbb.apps.backups.models import Backup
 from dbb.utils.content_type import get_backend_type as bknd
 
@@ -39,31 +39,49 @@ def databases(request, *args, **kwargs):
     if request.method == 'POST':
         # recibo la data de las base de datos nueva
         data = request.POST
+
+        if not empty_validator(data, ['db_name', 'db_host', 'db_user', 'db_pass', 'db_port']):
+            context['result'] = 'Ningún campo debe estar vacío'
+        elif not number_validator(data,['db_port']):
+            context['result'] = 'El puerto debe ser un valor entero'
+
+        if context.has_key('result'):
+            # mensaje de error
+            return render(request, 'crud_databases.html', context)
+
         if data.get('db_backend') == 'psql':
-            if empty_validator(data, ['db_name', 'db_host', 'db_user', 'db_pass', 'db_port']):
-                if number_validator(data,['db_port']):
-                    psqlB = PsqlBackend(
-                        name=data.get('db_name', None),
-                        host=data.get('db_host', None),
-                        username=data.get('db_user', None),
-                        password=data.get('db_pass', None),
-                        port=data.get('db_port', None)
-                    )
-                    try:
-                        psqlB.save()
-                        context['result'] = '¡Base registrada correctamente!'
-                        context['status'] = 'success'
-                    except ValueError as e:
-                        context['result'] = unicode(e)
-                else:
-                    context['result'] = 'El puerto debe ser un valor entero'
-            else:
-                context['result'] = 'Ningún campo debe estar vacío'
+            psqlB = PsqlBackend(
+                name=data.get('db_name', None),
+                host=data.get('db_host', None),
+                username=data.get('db_user', None),
+                password=data.get('db_pass', None),
+                port=data.get('db_port', None)
+            )
+            try:
+                psqlB.save()
+                context['result'] = '¡Base registrada correctamente!'
+                context['status'] = 'success'
+            except ValueError as e:
+                context['result'] = unicode(e)
+        elif data.get('db_backend') == 'mysql':
+            mysqlB = MysqlBackend(
+                name=data.get('db_name', None),
+                host=data.get('db_host', None),
+                username=data.get('db_user', None),
+                password=data.get('db_pass', None),
+                port=data.get('db_port', None)
+            )
+            try:
+                mysqlB.save()
+                context['result'] = '¡Base registrada correctamente!'
+                context['status'] = 'success'
+            except ValueError as e:
+                context['result'] = unicode(e)
         else:
             context['result'] = 'Backend no soportado'
             context['status'] = 'warning'
 
-    for db in PsqlBackend.objects.all().order_by('-pk')[:5]:
+    for db in RemoteDatabase.objects.all().order_by('-pk')[:5]:
         databases.append(u"{} ({})".format(db.name, db.host))
 
     context['db_list'] = databases
@@ -108,7 +126,7 @@ def databases_list(request):
     titles = ["Nombre", "Host", "Puerto", "Usuario", "Password", "Backend", "Opciones"]
     rows = {}
 
-    databases = PsqlBackend.objects.all()
+    databases = RemoteDatabase.objects.all()
     for db in databases:
         data_row = [db.name, db.host, db.port, db.username, '***', 'PostgreSQL']
         rows[db.pk] = data_row
