@@ -33,5 +33,6 @@ con los siguientes permisos:
 0600
 
 Configuración de permisos para MySQL/MaríaDB sobre Debian:
+===
 
 Necesitarás instalar el siquiente paquete default-libmysqlclient-dev
