@@ -34,47 +34,32 @@ def new_database(request, *args, **kwargs):
     if request.method == 'POST':
         form = RemoteDatabaseForm(request.POST)
         if form.is_valid():
-            context = {
-                'status': 'danger', # caso más común
-            }
+            context = {}
+
             data = form.cleaned_data
 
-            if data.get('backend') == 'psql':
-                psqlB = PsqlBackend(
-                    name=data.get('name'),
-                    host=data.get('host'),
-                    username=data.get('username'),
-                    password=data.get('password'),
-                    port=data.get('port')
-                )
-                try:
-                    psqlB.save()
-                    context['result'] = '¡Base registrada correctamente!'
-                    context['status'] = 'success'
-                except ValueError as e:
-                    context['result'] = unicode(e)
-            elif data.get('backend') == 'mysql':
-                mysqlB = MysqlBackend(
-                    name=data.get('db_name'),
-                    host=data.get('db_host'),
-                    username=data.get('db_user'),
-                    password=data.get('db_pass'),
-                    port=data.get('db_port')
-                )
-                try:
-                    mysqlB.save()
-                    context['result'] = '¡Base registrada correctamente!'
-                    context['status'] = 'success'
-                except ValueError as e:
-                    context['result'] = unicode(e)
-            else:
-                context['result'] = 'Backend no soportado'
-                context['status'] = 'warning'
+            backend = data.pop('backend', None)
+
             context['result'] = '¡Base registrada correctamente!'
             context['status'] = 'success'
-            return render(request, 'crud_databases.html', context)
+            try:
+                if backend == 'psql':
+                    psqlB = PsqlBackend(**data)
+                    psqlB.save()
+                elif backend == 'mysql':
+                    mysqlB = MysqlBackend(**data)
+                    mysqlB.save()
+                else:
+                    context['result'] = 'Backend no soportado'
+                    context['status'] = 'warning'
+            except ValueError as e:
+                context['result'] = unicode(e)
+                context['status'] = 'danger'
         else:
-            pass # TODO: insultar al usuario.
+            context['result'] = 'Datos incorrectos' # TODO: capturar mensajes del is_valid
+            context['status'] = 'danger'
+
+        return render(request, 'crud_databases.html', context)
     else:
         form = RemoteDatabaseForm()
         return render(request, 'create_database.html', {'form': form, 'form_title': 'Nueva base de datos'})
