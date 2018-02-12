@@ -14,27 +14,18 @@ from dbb.apps.backups.models import Backup
 from dbb.utils.content_type import get_backend_type as bknd
 
 
-def empty_validator(data, fields):
-    for field in fields:
-        if not data.get(field, None):
-            return False
-    return True
-
-def number_validator(data, fields):
-    i = 0
-    isNum = True
-    while (i < len(fields) and isNum):
-        isNum = data.get(fields[i]).isdigit()
-        i += 1
-
-    return (isNum)
-
 @login_required
 def new_database(request, *args, **kwargs):
+    databases = []
+    context = {}
+
+    # ultimas creaciones
+    for db in RemoteDatabase.objects.all().order_by('-pk')[:5]:
+        databases.append(u"{} ({})".format(db.name, db.host))
+
     if request.method == 'POST':
         form = RemoteDatabaseForm(request.POST)
         if form.is_valid():
-            context = {}
 
             data = form.cleaned_data
 
@@ -59,72 +50,18 @@ def new_database(request, *args, **kwargs):
             context['result'] = 'Datos incorrectos' # TODO: capturar mensajes del is_valid
             context['status'] = 'danger'
 
-        return render(request, 'crud_databases.html', context)
-    else:
-        form = RemoteDatabaseForm()
-        return render(request, 'create_database.html', {'form': form, 'form_title': 'Nueva base de datos'})
-
-
-
-@login_required
-def databases(request, *args, **kwargs):
-    databases = []
-
-    context = {
-        'status': 'danger', # caso más común
+    form = RemoteDatabaseForm()
+    base_context = {
+        'form': form,
+        'form_title': 'Nueva base de datos',
+        'posturl': '/databases/new',
+        'db_list': databases
     }
 
-    if request.method == 'POST':
-        # recibo la data de las base de datos nueva
-        data = request.POST
+    base_context.update(context)
 
-        if not empty_validator(data, ['db_name', 'db_host', 'db_user', 'db_pass', 'db_port']):
-            context['result'] = 'Ningún campo debe estar vacío'
-        elif not number_validator(data,['db_port']):
-            context['result'] = 'El puerto debe ser un valor entero'
+    return render(request, 'create_database.html', base_context)
 
-        if context.has_key('result'):
-            # mensaje de error
-            return render(request, 'crud_databases.html', context)
-
-        if data.get('db_backend') == 'psql':
-            psqlB = PsqlBackend(
-                name=data.get('db_name', None),
-                host=data.get('db_host', None),
-                username=data.get('db_user', None),
-                password=data.get('db_pass', None),
-                port=data.get('db_port', None)
-            )
-            try:
-                psqlB.save()
-                context['result'] = '¡Base registrada correctamente!'
-                context['status'] = 'success'
-            except ValueError as e:
-                context['result'] = unicode(e)
-        elif data.get('db_backend') == 'mysql':
-            mysqlB = MysqlBackend(
-                name=data.get('db_name', None),
-                host=data.get('db_host', None),
-                username=data.get('db_user', None),
-                password=data.get('db_pass', None),
-                port=data.get('db_port', None)
-            )
-            try:
-                mysqlB.save()
-                context['result'] = '¡Base registrada correctamente!'
-                context['status'] = 'success'
-            except ValueError as e:
-                context['result'] = unicode(e)
-        else:
-            context['result'] = 'Backend no soportado'
-            context['status'] = 'warning'
-
-    for db in RemoteDatabase.objects.all().order_by('-pk')[:5]:
-        databases.append(u"{} ({})".format(db.name, db.host))
-
-    context['db_list'] = databases
-
-    return render(request, 'crud_databases.html', context)
 
 @login_required
 def make_backup(request):

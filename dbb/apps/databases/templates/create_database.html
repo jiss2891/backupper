@@ -1,16 +1,40 @@
 {% extends 'admin.html' %}
 
 {% block content %}
-<form action="{% url 'databases_new' %}" method="post">
-	{% csrf_token %}
-  <h1>{{ form_title }}</h1>
-  <hr>
-  {% for field in form %}
-  <div class="form-group">
-      {{ field.errors }}
-      {{ field.label_tag }} {{ field }}
+<h1>{{ form_title }}</h1>
+<hr>
+{% if result %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="alert alert-{{ status }}" role="alert">{{ result }}</div>
   </div>
-  {% endfor %}
-	<input type="submit" value="Submit" />
-</form>
+</div>
+{% endif %}
+<div class="row">
+  <div class="col-md-6">
+  {% include "base_form.html" %}
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Últimas creaciones</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+          {% for db in db_list %}
+          <li>{{ db }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Notificaciones</h3>
+        </div>
+        <div class="panel-body">
+            No hay notificaciones en este momento.
+        </div>
+      </div>
+  </div>
+</div>
 {% endblock %}

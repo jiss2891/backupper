@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import new_database, databases, make_backup, databases_list
+from .views import new_database, make_backup, databases_list
 
 
 urlpatterns = [
