@@ -18,6 +18,8 @@ from django.views.generic import TemplateView
 from apps.home.views import users_list, index
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 # el $ le dice a la expresion que termina ahi.
 urlpatterns = [
@@ -33,4 +35,4 @@ urlpatterns = [
     url(r'^$', index, name='index'),
     url(r'^users/$', users_list, name='users-list'),
     url(r'^admin/', admin.site.urls),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
