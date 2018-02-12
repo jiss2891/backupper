@@ -110,7 +110,7 @@ class PsqlBackend(RemoteDatabase):
             os.system("chmod 600 ~/.pgpass")
             # abro archivo con permisos de append
             pgpass = open(os.path.join('/home', usuario, '.pgpass'), 'a+')
-            pg_line = unicode(self.host) + ":" + self.port + ":" + unicode(self.name) + ":" + self.username + ":" + self.password
+            pg_line = "{}:{}:{}:{}:{}\n".format(self.host, self.port, self.name, self.username, self.password)
             pgpass.write(pg_line)
             pgpass.close()
             super(PsqlBackend, self).save(args, kwargs)

@@ -34,10 +34,43 @@ def new_database(request, *args, **kwargs):
     if request.method == 'POST':
         form = RemoteDatabaseForm(request.POST)
         if form.is_valid():
-            #
-            # TODO: proceso de guardado
-            #
-            context = {}
+            context = {
+                'status': 'danger', # caso más común
+            }
+            data = form.cleaned_data
+
+            if data.get('backend') == 'psql':
+                psqlB = PsqlBackend(
+                    name=data.get('name'),
+                    host=data.get('host'),
+                    username=data.get('username'),
+                    password=data.get('password'),
+                    port=data.get('port')
+                )
+                import ipdb; ipdb.set_trace()
+                try:
+                    psqlB.save()
+                    context['result'] = '¡Base registrada correctamente!'
+                    context['status'] = 'success'
+                except ValueError as e:
+                    context['result'] = unicode(e)
+            elif data.get('backend') == 'mysql':
+                mysqlB = MysqlBackend(
+                    name=data.get('db_name'),
+                    host=data.get('db_host'),
+                    username=data.get('db_user'),
+                    password=data.get('db_pass'),
+                    port=data.get('db_port')
+                )
+                try:
+                    mysqlB.save()
+                    context['result'] = '¡Base registrada correctamente!'
+                    context['status'] = 'success'
+                except ValueError as e:
+                    context['result'] = unicode(e)
+            else:
+                context['result'] = 'Backend no soportado'
+                context['status'] = 'warning'
             context['result'] = '¡Base registrada correctamente!'
             context['status'] = 'success'
             return render(request, 'crud_databases.html', context)
