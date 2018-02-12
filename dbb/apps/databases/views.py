@@ -47,7 +47,6 @@ def new_database(request, *args, **kwargs):
                     password=data.get('password'),
                     port=data.get('port')
                 )
-                import ipdb; ipdb.set_trace()
                 try:
                     psqlB.save()
                     context['result'] = '¡Base registrada correctamente!'
@@ -78,7 +77,7 @@ def new_database(request, *args, **kwargs):
             pass # TODO: insultar al usuario.
     else:
         form = RemoteDatabaseForm()
-        return render(request, 'create_database.html', {'form': form})
+        return render(request, 'create_database.html', {'form': form, 'form_title': 'Nueva base de datos'})
 
 
 
