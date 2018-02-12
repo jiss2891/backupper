@@ -79,16 +79,16 @@ def make_backup(request):
         if not os.path.exists(path):
             os.makedirs(path)
 
-        dump_file = open(path + dt.strftime(dt.now(), "%s"), 'w+')
-        dump_file.writelines(dump.readlines())
-
         bkp = Backup(
             db=real_backend,
             backup_file=dump_file.name,
             user=request.user
         )
-
         bkp.save()
+
+        dump_file = open(path + dt.strftime(bkp.date, "%s") + '.sql', 'w+')
+        dump_file.writelines(dump.readlines())
+
         dump_file.close()
 
         return HttpResponse("Backup creado correctamente en {}".format(dump_file.name))

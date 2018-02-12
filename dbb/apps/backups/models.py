@@ -11,7 +11,7 @@ from django.db.models.signals import post_save
 from dbb.apps.databases.models import Database
 
 
-def calculate_path(instance, filename):
+def calculate_path(instance, filename=None):
     """
         Calculates a name for the backup.
     """
