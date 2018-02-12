@@ -7,6 +7,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required
 
+from .forms import RemoteDatabaseForm
+
 from dbb.apps.databases.models import MysqlBackend, Database, RemoteDatabase, PsqlBackend
 from dbb.apps.backups.models import Backup
 from dbb.utils.content_type import get_backend_type as bknd
@@ -26,6 +28,25 @@ def number_validator(data, fields):
         i += 1
 
     return (isNum)
+
+@login_required
+def new_database(request, *args, **kwargs):
+    if request.method == 'POST':
+        form = RemoteDatabaseForm(request.POST)
+        if form.is_valid():
+            #
+            # TODO: proceso de guardado
+            #
+            context = {}
+            context['result'] = '¡Base registrada correctamente!'
+            context['status'] = 'success'
+            return render(request, 'crud_databases.html', context)
+        else:
+            pass # TODO: insultar al usuario.
+    else:
+        form = RemoteDatabaseForm()
+        return render(request, 'create_database.html', {'form': form})
+
 
 
 @login_required
