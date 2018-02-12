@@ -65,6 +65,7 @@ def new_database(request, *args, **kwargs):
 
 @login_required
 def make_backup(request):
+    # TODO: implementar commit atómico
     # obtengo el id de la base de datos
     db_id = request.GET.get("db_id", None)
 
@@ -72,7 +73,7 @@ def make_backup(request):
         real_backend = bknd(db_id)
         dump = real_backend.get_dump()
 
-        path = settings.MEDIA_ROOT + '/backups_storage/{}/{}'.format(
+        path = settings.MEDIA_ROOT + '/backups_storage/{}/{}/'.format(
             request.user.username,
             real_backend.name,
         )
@@ -81,12 +82,14 @@ def make_backup(request):
 
         bkp = Backup(
             db=real_backend,
-            backup_file=dump_file.name,
             user=request.user
         )
-        bkp.save()
+        bkp.save() # genero la fecha en la bbdd
 
         dump_file = open(path + dt.strftime(bkp.date, "%s") + '.sql', 'w+')
+        bkp.backup_file = dump_file.name
+        bkp.save() # guardado final
+
         dump_file.writelines(dump.readlines())
 
         dump_file.close()
