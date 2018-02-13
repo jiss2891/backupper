@@ -64,3 +64,7 @@ body {
   background-color: #efefef;
   text-align: center;
 }
+
+.context_options {
+  font-size: 1.5rem;
+}

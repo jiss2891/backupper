@@ -19,7 +19,7 @@ def backups(request):
                     bkp.user.username,
                     bkp.db.name,
                     dt.strftime(bkp.date, "%s")
-            ): 'glyphicon glyphicon-download'}
+            ): 'icon ion-ios-cloud-download-outline'}
         ]
 
         rows[bkp.pk] = data_row

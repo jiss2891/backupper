@@ -1,5 +1,5 @@
 {# tabla básica #}
-<table id="base_table" class="table table-md table-responsive-sm table-striped table-hover">
+<table id="base_table" class="table table-sm table-responsive-sm table-striped table-hover">
   <caption>TODO: cargar { titulo }</caption>
   <thead>
     <tr>
@@ -20,7 +20,7 @@
         {{ cell }}
       </td>
       {% endfor %}
-      <td id="context_options">
+      <td class="context_options">
         {% for opt, icon in data.1.items %}
         <a href="{{ opt }}"><span class="{{ icon }}"></span></a>
         {% endfor %}

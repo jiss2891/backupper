@@ -109,7 +109,7 @@ def databases_list(request):
     for db in databases:
         db = bknd(db)
         data_row = [[db.name, db.host, db.port, db.username, '***', db.get_backend_label()],
-                {"/databases/backup?db_id={}".format(db.pk): 'glyphicon glyphicon-hdd'}]
+                {"/databases/backup?db_id={}".format(db.pk): 'icon ion-ios-copy-outline'}]
         rows[db.pk] = data_row
 
     return render(request, 'index.html', context={'options': options, 'rows': rows, 'titles':
