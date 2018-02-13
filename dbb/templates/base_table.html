@@ -1,12 +1,15 @@
 {# tabla básica #}
-<table id="base_table" class="table table-striped">
+<table id="base_table" class="table table-md table-responsive-sm table-striped table-hover">
+  <caption>TODO: cargar { titulo }</caption>
   <thead>
-    <th><input type="checkbox"></th>
-    {% for t in titles %}
-    <th>
-      {{ t }}
-    </th>
-    {% endfor %}
+    <tr>
+      <th><input type="checkbox"></th>
+      {% for t in titles %}
+      <th scope="col">
+        {{ t }}
+      </th>
+      {% endfor %}
+    </tr>
   </thead>
   <tbody>
     {% for key, data in rows.items %}
