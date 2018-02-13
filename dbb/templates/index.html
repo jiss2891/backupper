@@ -1,4 +1,12 @@
 {# página de inicio #}
 {% extends 'admin.html' %}
 {% block content %}
+<h3>Por donde comenzar</h3>
+<p>Lo primero que debe hacer es registrar un servidor de base de datos, haciendo click en Servidores > Registrar nuevo y completar el formulario con los datos necesarios. En esa vista tendrá un listado con lo últimos servidores registrados y notificaciones sobre eventos relacionados a dichos servidores.</p>
+<h3>Haciendo respaldos</h3>
+<p>Una vez registrado el servidor, podrá crear respaldos manualmente o programarlos para que se realizen automáticamente en cierta fecha (vía cron). Para realizar un respaldo manual, haga clic en Servidores > Servidores Registrados, diríjase a la fila correspondiente al servidor deseado y haga click en el ícono <span style="font-size: 1.5rem" class="icon ion-ios-copy-outline"></span>, el sistema lo redirigirá a la lista de respaldos realizado donde podrá el que acaba de hacer.</p>
+<h3>Descarga de respaldos</h3>
+<p>Diríjase a Respaldos > Respaldos Realizados, desde allí seleccione la fila del respaldo que desea descargar y por último haga clic en el ícono <span style="font-size: 1.5rem" class="icon ion-ios-cloud-download-outline"><span></p>
+<h3>Programar respaldos</h3>
+<p>Esta funcionalidad no ha sido implementada aún, pero consistirá de programaciones individuales o periódicas; deberá seleccionar la base de datos e ingresar una fecha o bien completar los campos al estilo crontab.</p>
 {% endblock %}
