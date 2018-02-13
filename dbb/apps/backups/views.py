@@ -24,5 +24,5 @@ def backups(request):
 
         rows[bkp.pk] = data_row
 
-    return render(request, 'index.html', context={'rows': rows, 'titles':
+    return render(request, 'list.html', context={'rows': rows, 'titles':
         titles})

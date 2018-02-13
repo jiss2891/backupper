@@ -20,7 +20,7 @@ body {
 }
 
 .login-block {
-  width: 320px;
+  width: 420px;
   height: auto;
   margin: auto;
   padding: 30px;
@@ -29,6 +29,12 @@ body {
   -webkit-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.26);
   -moz-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.26);
   box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.26);
+}
+
+.login-area {
+  background-size: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .login-content {

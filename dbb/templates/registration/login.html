@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block content %}
-<div class="login-area" style="background-image: url('{% static "images/bg.jpg" %}');">
+{% block extracss %}
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+{% endblock %}
+{% block login %}
 <div class="login-block">
   <img src="{% static 'images/logo.png' %}"></img>
   <div class="login-content"

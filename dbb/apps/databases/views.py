@@ -112,5 +112,5 @@ def databases_list(request):
                 {"/databases/backup?db_id={}".format(db.pk): 'icon ion-ios-copy-outline'}]
         rows[db.pk] = data_row
 
-    return render(request, 'index.html', context={'options': options, 'rows': rows, 'titles':
+    return render(request, 'list.html', context={'options': options, 'rows': rows, 'titles':
         titles})

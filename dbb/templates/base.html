@@ -14,6 +14,8 @@
     <!-- Custom CSS -->
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
     <link href="{% static 'css/ionicons.min.css' %}" rel="stylesheet">
+    <!-- view-specific css -->
+    {% block extracss %}{% endblock %}
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{% static 'bower_components/jquery/dist/jquery.min.js'%}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -21,16 +23,15 @@
     <script src="{% static 'js/base.js' %}"></script>
   </head>
   <body>
+    {% block login %}
+    {% endblock %}
     {% block nav %}
     {% endblock %}
     <div class="container">
     {% block content %}
     {% endblock %}
     </div>
-    <footer class="footer">
-      <div class="container">
-        <p>Texto de Prueba</p>
-      </div>
-    </footer>
+    {% block footer %}
+    {% endblock %}
   </body>
 </html>
