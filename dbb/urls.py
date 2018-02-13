@@ -23,13 +23,7 @@ from django.conf.urls.static import static
 
 # el $ le dice a la expresion que termina ahi.
 urlpatterns = [
-    url(r'^accounts/login/$', auth_views.login, {'template_name':
-        'login.html'},
-        name='login'),
-    url(r'^accounts/logout/$', auth_views.logout, {'template_name':
-        'login.html'},
-        name='logout'),
-    url('^', include('django.contrib.auth.urls')),
+    url('accounts/', include('django.contrib.auth.urls')),
     url('^', include('dbb.apps.databases.urls')),
     url('^', include('dbb.apps.backups.urls')),
     url(r'^$', index, name='index'),
