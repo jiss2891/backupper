@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from datetime import datetime as dt
+from collections import OrderedDict
 
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
@@ -102,10 +103,10 @@ def make_backup(request):
 @login_required
 def databases_list(request):
     titles = ["Nombre", "Host", "Puerto", "Usuario", "Password", "Backend", "Opciones"]
-    rows = {}
+    rows = OrderedDict()
     options = {}
 
-    databases = RemoteDatabase.objects.all()
+    databases = RemoteDatabase.objects.order_by('-pk')
     for db in databases:
         db = bknd(db)
         data_row = [[db.name, db.host, db.port, db.username, '***', db.get_backend_label()],
