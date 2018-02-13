@@ -15,6 +15,10 @@ body {
   min-height: 100%;
 }
 
+.card {
+  margin-bottom: 20px;
+}
+
 .login-block {
   width: 320px;
   height: auto;

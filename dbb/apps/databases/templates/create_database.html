@@ -11,30 +11,38 @@
 </div>
 {% endif %}
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-7">
   {% include "base_form.html" %}
   </div>
-  <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Últimas creaciones</h3>
-      </div>
-      <div class="panel-body">
-        <ul>
-          {% for db in db_list %}
-          <li>{{ db }}</li>
-          {% endfor %}
-        </ul>
+  <div class="col-md-5">
+    <div class="row">
+      <div class="col-md">
+        <div class="card">
+          <div class="card-header">
+            Últimas creaciones
+          </div>
+          <div class="card-body">
+            <ul>
+              {% for db in db_list %}
+              <li>{{ db }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">Notificaciones</h3>
-        </div>
-        <div class="panel-body">
-            No hay notificaciones en este momento.
+    <div class="row">
+      <div class="col-md">
+        <div class="card">
+          <div class="card-header">
+            Notificaciones
+          </div>
+          <div class="card-body">
+              No hay notificaciones en este momento.
+          </div>
         </div>
       </div>
+    </div>
   </div>
 </div>
 {% endblock %}
