@@ -13,7 +13,7 @@ def backups(request):
     titles = [u"Base de datos", u"Fecha", u"Ubicación", "Opciones"]
     rows = OrderedDict()
 
-    backups_qs = Backup.objects.order_by('-pk')
+    backups_qs = Backup.objects.order_by('-id')
     for bkp in backups_qs:
         data_row = [[bkp.db.name, bkp.date, bkp.backup_file.name],
                 {"/media/backups_storage/{}/{}/{}.sql".format(
