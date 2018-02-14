@@ -21,8 +21,6 @@ def bash_sanitize(in_str, extra_excluded=None):
         if exc in in_str:
             matches.append(exc)
 
-
-    import ipdb; ipdb.set_trace()
     if len(matches):
         matches = ", ".join(matches)
         return (False, matches)
