@@ -45,6 +45,7 @@ def new_database(request, *args, **kwargs):
                     context['result'] = 'Backend no soportado'
                     context['status'] = 'warning'
             except ValueError as e:
+                context['form'] = form # evita que el usuario tenga que completar el formulario de nuevo.
                 context['result'] = unicode(e)
                 context['status'] = 'danger'
         else:
