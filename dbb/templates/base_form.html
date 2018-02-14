@@ -1,9 +1,12 @@
 <form action="{{ posturl }}" method="post">
-	{% csrf_token %}
+  {% csrf_token %}
   {% for field in form %}
   <div class="form-group">
       {{ field.errors }}
       {{ field.label_tag }} {{ field }}
+      {% if field.help_text %}
+      <small class="text-muted">{{ field.help_text|safe }}</small>
+      {% endif %}
   </div>
   {% endfor %}
   <div class="form-group">
