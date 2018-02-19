@@ -33,7 +33,14 @@ class RemoteDatabase(Database):
         pass
 
     def get_label(self):
-        return "RemoteDatabase {} on {}".format(self.name, self.host)
+        return "'{}'@'{}'".format(self.name, self.host)
+
+    def __str__(self):
+        return self.get_label()
+
+    def __unicode__(self):
+        return self.get_label()
+
 
 class SqliteBackend(Database):
     path = models.CharField(max_length=100)
@@ -43,6 +50,7 @@ class SqliteBackend(Database):
 
     def get_backend_label(self):
         return "SQlite"
+
 
 class MysqlBackend(RemoteDatabase):
 

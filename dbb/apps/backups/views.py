@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from dbb.apps.backups.models import Backup
+from dbb.apps.backups.forms import DelayedBackupForm
 
 
 @login_required
@@ -31,3 +32,9 @@ def backups(request):
 
     return render(request, 'list.html', context={'rows': rows, 'titles':
         titles})
+
+def delay_backup(request):
+    form = DelayedBackupForm()
+    form.fields['database'].queryset = form.fields['database'].queryset.filter(creator=request.user)
+
+    return render(request, 'create_database.html', {'form': form})
