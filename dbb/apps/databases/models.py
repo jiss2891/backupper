@@ -5,6 +5,7 @@ import os, codecs, getpass # para detectar al usuario
 
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 
 from dbb.utils import sanitize, files
 
@@ -12,6 +13,7 @@ from dbb.utils import sanitize, files
 class Database(models.Model):
     '''Manage minimal database config'''
     name = models.CharField(max_length=100)
+    creator = models.ForeignKey(User)
 
     def get_dump(self):
         pass

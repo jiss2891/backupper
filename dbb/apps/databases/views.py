@@ -29,6 +29,7 @@ def new_database(request, *args, **kwargs):
         if form.is_valid():
 
             data = form.cleaned_data
+            data['creator'] = request.user
 
             backend = data.pop('backend', None)
 
@@ -108,6 +109,11 @@ def databases_list(request):
     options = {}
 
     databases = RemoteDatabase.objects.order_by('-pk')
+
+    if not request.user.is_staff:
+        # filtro solo por las que pertenecen al usuario
+        databases = databases.filter(creator=request.user)
+
     for db in databases:
         db = bknd(db)
         data_row = [[db.name, db.host, db.port, db.username, '***', db.get_backend_label()],

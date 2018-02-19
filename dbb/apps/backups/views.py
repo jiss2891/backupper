@@ -14,6 +14,10 @@ def backups(request):
     rows = OrderedDict()
 
     backups_qs = Backup.objects.order_by('-id')
+    if not request.user.is_staff:
+        # filtro solo por las que pertenecen al usuario
+        backups_qs = backups_qs.filter(db__creator=request.user)
+
     for bkp in backups_qs:
         data_row = [[bkp.db.name, bkp.date, bkp.backup_file.name],
                 {"/media/backups_storage/{}/{}/{}.sql".format(
