@@ -24,10 +24,13 @@ class bootSelect(forms.Select):
         attrs = {'class': 'form-control'}
         super(bootSelect, self).__init__(attrs, *args, **kwargs)
 
-class bootCheckbox(forms.CheckboxInput):
+
+class bootToggle(forms.CheckboxInput):
+    html_id = ''
     def __init__(self, *args, **kwargs):
-        attrs = {'class': 'form-check'}
-        super(bootCheckbox, self).__init__(attrs, *args, **kwargs)
+        attrs = {'class': 'form-control'}
+        super(bootToggle, self).__init__(attrs, *args, **kwargs)
+
 
 class bootDate(forms.DateInput):
     def __init__(self, *args, **kwargs):

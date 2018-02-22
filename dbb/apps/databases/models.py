@@ -21,6 +21,9 @@ class Database(models.Model):
     def get_backend_label(self):
         return "Not specified"
 
+    def get_label(self):
+        return "Not specified"
+
 
 class RemoteDatabase(Database):
     ''' Manage databases on remote hosts'''

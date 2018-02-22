@@ -5,8 +5,8 @@ from collections import OrderedDict
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-from dbb.apps.backups.models import Backup
-from dbb.apps.backups.forms import DelayedBackupForm
+from dbb.apps.backups.models import Backup, ScheduledBackup
+from dbb.apps.backups.forms import ScheduledBackupForm
 
 
 @login_required
@@ -33,8 +33,28 @@ def backups(request):
     return render(request, 'list.html', context={'rows': rows, 'titles':
         titles})
 
-def delay_backup(request):
-    form = DelayedBackupForm()
-    form.fields['database'].queryset = form.fields['database'].queryset.filter(creator=request.user)
-
-    return render(request, 'create_database.html', {'form': form})
+def new_schedule(request):
+    context = {}
+    if request.method == 'GET':
+        form = ScheduledBackupForm()
+        form.fields['database'].queryset = form.fields['database'].queryset.filter(creator=request.user)
+        form.fields['only_once'].widget.attrs = {'checked': 'true'}
+    elif request.method == 'POST':
+        form = ScheduledBackupForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            try:
+                scheduled = ScheduledBackup(**data)
+                scheduled.save()
+                context['result'] = '¡Respaldo programado correctamente!'
+                context['status'] = 'success'
+            except Exception as e:
+                context['form'] = form # evita que el usuario tenga que completar el formulario de nuevo.
+                context['result'] = unicode(e)
+                context['status'] = 'danger'
+    base_context = {
+        'form': form,
+        'form_title': 'Programar respaldo'
+    }
+    base_context.update(context)
+    return render(request, 'create_database.html', base_context)
