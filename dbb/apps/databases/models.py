@@ -32,6 +32,9 @@ class RemoteDatabase(Database):
     password = models.CharField(max_length=100)
     port = models.IntegerField()
 
+    def get_dump_command(self):
+        pass
+
     def get_dump(self):
         pass
 
@@ -87,11 +90,12 @@ class MysqlBackend(RemoteDatabase):
         else:
             raise ValueError("Cadenas ingresadas inválidas: {}".format(matches))
 
-    def get_dump(self):
-        command = u"mysqldump --defaults-group-suffix={} -u {} -h {} -P {} {}".format(self.login_path, self.username, self.host, self.port,
+    def get_dump_command(self):
+        return u"mysqldump --defaults-group-suffix={} -u {} -h {} -P {} {}".format(self.login_path, self.username, self.host, self.port,
             self.name)
-        print command
-        return os.popen(command)
+
+    def get_dump(self):
+        return os.popen(self.get_dump_command())
 
 
 class PsqlBackend(RemoteDatabase):
@@ -120,8 +124,11 @@ class PsqlBackend(RemoteDatabase):
             raise ValueError("Cadenas ingresadas inválidas: {}".format(matches))
 
 
+    def get_dump_command(self):
+        return u"pg_dump -h {} -p {} -U {} -d {} ".format(self.host, self.port, self.username, self.name)
+
     def get_dump(self):
         """
         retorna un popen sin leer
         """
-        return os.popen(u"pg_dump -h {} -p {} -U {} -d {} ".format(self.host, self.port, self.username, self.name))
+        return os.popen(self.get_dump_command())
