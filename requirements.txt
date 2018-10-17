@@ -7,11 +7,14 @@
 backports.shutil-get-terminal-size==1.0.0  # via ipython
 click==6.7                # via pip-tools
 decorator==4.3.0          # via ipython, traitlets
-django==1.10.5
+django-filter==2.0.0
+django==1.11.14
+djangorestframework==3.8.2
 enum34==1.1.6             # via traitlets
 first==2.0.1              # via pip-tools
 ipython-genutils==0.2.0   # via traitlets
 ipython==5.8.0
+markdown==2.6.11
 pathlib2==2.3.2           # via ipython, pickleshare
 pexpect==4.6.0            # via ipython
 pickleshare==0.7.4        # via ipython
@@ -19,6 +22,7 @@ pip-tools==2.0.2
 prompt-toolkit==1.0.15    # via ipython
 ptyprocess==0.6.0         # via pexpect
 pygments==2.2.0           # via ipython
+pytz==2018.5              # via django
 scandir==1.7              # via pathlib2
 simplegeneric==0.8.1      # via ipython
 six==1.11.0               # via pathlib2, pip-tools, prompt-toolkit, traitlets

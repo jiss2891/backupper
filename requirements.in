@@ -1,3 +1,6 @@
-Django==1.10.5
-ipython
+Django==1.11.14
+djangorestframework==3.8.2
+markdown==2.6.11
+django-filter==2.0.0
+ipython==5.8.0
 pip-tools==2.0.2
