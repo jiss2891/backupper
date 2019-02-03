@@ -3,8 +3,10 @@ from datetime import datetime as dt
 from collections import OrderedDict
 
 from django.shortcuts import render
+from django.views.generic.edit import FormView
 from django.contrib.auth.decorators import login_required
 
+# TODO: use explicit relative imports.
 from dbb.apps.backups.models import Backup, ScheduledBackup
 from dbb.apps.backups.forms import ScheduledBackupForm
 
@@ -33,28 +35,26 @@ def backups(request):
     return render(request, 'list.html', context={'rows': rows, 'titles':
         titles})
 
-def new_schedule(request):
-    context = {}
-    if request.method == 'GET':
-        form = ScheduledBackupForm()
-        form.fields['database'].queryset = form.fields['database'].queryset.filter(creator=request.user)
-        form.fields['only_once'].widget.attrs = {'checked': 'true'}
-    elif request.method == 'POST':
-        form = ScheduledBackupForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            try:
-                scheduled = ScheduledBackup(**data)
-                scheduled.save()
-                context['result'] = '¡Respaldo programado correctamente!'
-                context['status'] = 'success'
-            except Exception as e:
-                context['form'] = form # evita que el usuario tenga que completar el formulario de nuevo.
-                context['result'] = unicode(e)
-                context['status'] = 'danger'
-    base_context = {
-        'form': form,
-        'form_title': 'Programar respaldo'
-    }
-    base_context.update(context)
-    return render(request, 'create_database.html', base_context)
+class ScheduleView(FormView):
+    template_name = 'create_database.html'  # TODO: fix this, get proper template configuration
+    form_class = ScheduledBackupForm
+    success_url = ''
+
+    def form_valid(self, form):
+        context = {}
+        data = form.cleaned_data
+        try:
+            scheduled = ScheduledBackup(**data)
+            scheduled.save()
+            context['result'] = '¡Respaldo programado correctamente!'
+            context['status'] = 'success'
+        except Exception as e:
+            context['form'] = form # evita que el usuario tenga que completar el formulario de nuevo.
+            context['result'] = unicode(e)
+            context['status'] = 'danger'
+        base_context = {
+            'form': form,
+            'form_title': 'Programar respaldo'
+        }
+        base_context.update(context)
+        return render(self.request, 'create_database.html', base_context)
